@@ -13,9 +13,16 @@ if 'messages' not in st.session_state:
 
 # Function to get response from the custom model API
 def get_custom_model_response(messages):
+    modified_messages = []
+    for message in messages:
+        if message["role"] == "user":
+            modified_message = {"role": "user", "content": f"{message['content']} ISB"}
+        else:
+            modified_message = message
+        modified_messages.append(modified_message)
     response = client.chat.completions.create(
         model="llama-3-sonar-large-32k-online",
-        messages=messages,
+        messages=modified_messages,
     )
     return response.choices[0].message.content
 
@@ -40,8 +47,9 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] != "assis
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             # Prepare the conversation history for the API request
-            conversation_history = [{"role": "system", "content": "You are an artificial intelligence assistant and you need to engage in a helpful, detailed, polite conversation with a user."},
-            {"role": "user", "content": f"{msg['content']} ISB"} for msg in st.session_state.messages]
+            conversation_history = [
+                {"role": "system", "content": "You are an artificial intelligence assistant and you need to engage in a helpful, detailed, polite conversation with a user."}
+            ] + st.session_state.messages
             # Get the response from the custom model API
             response = get_custom_model_response(conversation_history)
 
