@@ -25,7 +25,7 @@ st.title("Chatbot using Custom Model")
 # Prompt for user input and save to chat history
 if prompt := st.chat_input("Your question"):
     prompt1=f"{prompt} ISB"
-    st.session_state.messages.append({"role": "user", "content": str(prompt)})
+    st.session_state.messages.append({"role": "user", "content": str(prompt1)})
     
     # Append "ISB" to the user's question internally
     
