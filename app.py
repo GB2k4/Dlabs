@@ -37,7 +37,7 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] != "assis
         with st.spinner("Thinking..."):
             # Prepare the conversation history for the API request
             conversation_history = [
-                {"role": "system", "content": "You are an artificial intelligence assistant to answer questions about I-venture @ Indian school of business(ISB)"}
+                {"role": "system", "content": "You are an artificial intelligence assistant and you need to engage in a helpful, detailed, polite conversation with a user."}
             ] + st.session_state.messages
 
             # Get the response from the custom model API
