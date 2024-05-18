@@ -24,7 +24,7 @@ st.title("Chatbot using Custom Model")
 
 # Prompt for user input and save to chat history
 if prompt := st.chat_input("Your question"):
-    prompt1=f"{prompt} ISB"
+    prompt1=f"{prompt}"
     st.session_state.messages.append({"role": "user", "content": str(prompt1)})
     
     # Append "ISB" to the user's question internally
@@ -40,10 +40,8 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] != "assis
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             # Prepare the conversation history for the API request
-            conversation_history = [
-                {"role": "system", "content": "You are an artificial intelligence assistant and you need to engage in a helpful, detailed, polite conversation with a user."}
-            ] + st.session_state.messages
-
+            conversation_history = [{"role": "system", "content": "You are an artificial intelligence assistant and you need to engage in a helpful, detailed, polite conversation with a user."},
+            {"role": "user", "content": f"{msg['content']} ISB"} for msg in st.session_state.messages]
             # Get the response from the custom model API
             response = get_custom_model_response(conversation_history)
 
